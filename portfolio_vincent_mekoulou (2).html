@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👨‍💻</text></svg>">
+
+<title>Vincent MEKOULOU — Ingénieur Système & Réseau</title>
+<meta name="description" content="Portfolio de Vincent MEKOULOU, Administrateur Système & Réseau en Île-de-France. 7 ans d'expérience en Linux, VMware, Cisco, Fortinet et automatisation Ansible.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+/* --- THEME MINIMALISTE SOMBRE (PAR DÉFAUT) --- */
+:root {
+--bg: #09090b;          /* Zinc 950 - Noir ultra profond */
+--surface: #18181b;     /* Zinc 900 - Gris très sombre */
+--surface-hover: #27272a;
+
+--text: #f4f4f5;        /* Zinc 50 - Blanc cassé pur */
+--text-muted: #a1a1aa;  /* Zinc 400 - Gris tech */
+--border: #27272a;      
+
+--accent: #10b981;      /* Emerald 500 - Le vert "Terminal" premium */
+--accent-dim: rgba(16, 185, 129, 0.15);
+--accent-glow: 0 0 20px rgba(16, 185, 129, 0.2);
+
+--nav-bg: rgba(9, 9, 11, 0.8);
+}
+
+/* --- THEME MINIMALISTE CLAIR --- */
+[data-theme="light"] {
+--bg: #fafafa;          
+--surface: #ffffff;     
+--surface-hover: #f4f4f5;
+
+--text: #09090b;        
+--text-muted: #71717a;  
+--border: #e4e4e7;      
+
+--accent: #2563eb;      /* Bleu Cobalt pour la confiance en mode clair */
+--accent-dim: rgba(37, 99, 235, 0.1);
+--accent-glow: 0 4px 15px rgba(37, 99, 235, 0.15);
+
+--nav-bg: rgba(250, 250, 250, 0.85);
+}
+
+html{scroll-behavior:smooth; scroll-padding-top: 120px;}
+body{
+  font-family:'Inter', sans-serif;
+  background:var(--bg); color:var(--text);
+  overflow-x:hidden; line-height: 1.7;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Typographie Tech (Terminal) */
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* Éléments de structure */
+.container { max-width: 1000px; margin: 0 auto; padding: 0 2rem; }
+.divider { width: 1px; height: 100px; background: var(--border); margin: 0 auto; }
+
+/* Navigation */
+nav{
+  position:fixed; top:0; width:100%; z-index:100; padding:1.2rem 0;
+  background:var(--nav-bg); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  transition: 0.3s;
+}
+.nav-content { display:flex; justify-content:space-between; align-items:center; }
+nav .logo{font-weight:700; font-size:1.1rem; letter-spacing:-0.5px;}
+nav .logo span{color:var(--accent);}
+.nav-right { display: flex; align-items: center; gap: 2rem; }
+nav ul{list-style:none; display:flex; gap:2rem; align-items:center;}
+nav a{color:var(--text-muted); text-decoration:none; font-size:0.85rem; font-family: 'JetBrains Mono', monospace; transition:.2s;}
+nav a:hover, nav a.active {color:var(--accent);}
+nav a span { color: var(--accent); opacity: 0.7; margin-right: 0.3rem; }
+
+/* Hamburger & Switcher */
+.theme-switch {
+  background: transparent; border: none; color: var(--text-muted);
+  font-size: 1.2rem; cursor: pointer; transition: 0.2s; display:flex; align-items:center;
+}
+.theme-switch:hover { color: var(--accent); }
+.icon-sun { display: none; }
+[data-theme="dark"] .icon-sun { display: block; }
+[data-theme="dark"] .icon-moon { display: none; }
+
+.hamburger { display: none; cursor: pointer; flex-direction: column; gap: 6px; background: transparent; border: none;}
+.hamburger span { width: 28px; height: 2px; background: var(--text); transition: 0.3s; border-radius: 2px;}
+
+/* HERO SECTION */
+.hero { min-height: 100vh; display: flex; align-items: center; padding-top: 8rem;}
+.hero-content { display: flex; flex-direction: column; align-items: flex-start; gap: 1.5rem; width: 100%;}
+
+.sys-prompt { 
+  background: var(--surface); padding: 0.6rem 1.2rem; border-radius: 6px; 
+  font-size: 0.85rem; color: var(--text-muted); border: 1px solid var(--border);
+  display: inline-flex; align-items: center; gap: 0.5rem;
+}
+.sys-prompt span { color: var(--accent); }
+.sys-prompt .cursor { display: inline-block; width: 8px; height: 15px; background: var(--accent); animation: blink 1s step-end infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+.hero h1 { font-size: clamp(3rem, 6vw, 5rem); font-weight: 700; letter-spacing: -2px; line-height: 1.1; color: var(--text); }
+.hero h1 .highlight { color: var(--accent); }
+.hero p { font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin-bottom: 1.5rem; }
+
+.hero-cta { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
+.btn { padding: 0.8rem 1.8rem; border-radius: 4px; font-weight: 500; font-size: 0.95rem; text-decoration: none; transition: 0.3s; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;}
+.btn-primary { background: var(--accent); color: var(--bg); box-shadow: var(--accent-glow); border: 1px solid transparent;}
+.btn-primary:hover { background: transparent; color: var(--accent); border-color: var(--accent); box-shadow: none;}
+.btn-outline { border: 1px solid var(--border); color: var(--text); background: transparent; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;}
+.btn-outline:hover { border-color: var(--text-muted); }
+
+/* STATS */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; padding: 3rem 0; width: 100%; border-top: 1px dashed var(--border); border-bottom: 1px dashed var(--border); margin: 4rem 0;}
+.stat-box { display: flex; flex-direction: column; gap: 0.5rem; }
+.stat-num { font-size: 2.5rem; font-weight: 700; color: var(--text); line-height: 1; font-family: 'JetBrains Mono', monospace;}
+.stat-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+
+/* SECTIONS GLOBALES (Chapitrage) */
+section { padding: 6rem 0; }
+.section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 4rem; width: 100%; }
+.section-num { font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; font-weight: 300; color: var(--accent); }
+.section-title { font-size: 2rem; font-weight: 700; letter-spacing: -1px; color: var(--text); white-space: nowrap;}
+.section-line { height: 1px; width: 100%; background: var(--border); }
+
+/* COMPÉTENCES */
+.skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+.skill-block { background: var(--surface); padding: 2rem; border-radius: 8px; border: 1px solid var(--border); transition: 0.3s; }
+.skill-block:hover { border-color: var(--accent); box-shadow: var(--accent-glow); }
+.skill-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+.skill-icon { font-size: 1.5rem; }
+.skill-name { font-weight: 600; font-size: 1.1rem; color: var(--text); }
+.skill-list { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.skill-list span { padding: 0.4rem 0.8rem; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-muted); transition: 0.2s;}
+.skill-list span:hover { color: var(--accent); border-color: var(--accent); }
+
+/* ARCHITECTURE INTERACTIVE */
+.interactive-wrapper { background: var(--surface); padding: 1rem; border-radius: 8px; border: 1px solid var(--border); }
+.interactive-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding: 0 0.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-muted);}
+.interactive-status { display: flex; align-items: center; gap: 0.5rem; color: var(--accent); }
+.interactive-status::before { content:''; display:block; width:8px; height:8px; background:var(--accent); border-radius:50%; box-shadow: var(--accent-glow);}
+#network-container { width: 100%; height: 500px; background: var(--bg); border-radius: 4px; border: 1px solid var(--border); cursor: grab;}
+#network-container:active { cursor: grabbing; }
+
+/* EXPÉRIENCE */
+.timeline { display: flex; flex-direction: column; gap: 3rem; position: relative; padding-left: 2rem; border-left: 1px solid var(--border); margin-left: 1rem;}
+.timeline-item { position: relative; }
+.timeline-item::before { content: ''; position: absolute; left: -2.4rem; top: 0; width: 12px; height: 12px; background: var(--bg); border: 2px solid var(--accent); border-radius: 50%; box-shadow: var(--accent-glow); transition: 0.3s; }
+.timeline-item:hover::before { background: var(--accent); }
+
+.exp-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--accent); margin-bottom: 0.5rem; display: block;}
+.exp-title { font-size: 1.3rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; }
+.exp-company { font-size: 1rem; color: var(--text-muted); margin-bottom: 1.2rem; font-weight: 500;}
+.exp-desc { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.exp-desc li { position: relative; padding-left: 1.2rem; font-size: 0.95rem; color: var(--text-muted); }
+.exp-desc li::before { content: '▹'; position: absolute; left: 0; color: var(--accent); font-family: 'JetBrains Mono', monospace;}
+.exp-desc li strong { color: var(--text); font-weight: 600; }
+.exp-tech { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+.exp-tech span { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-muted); padding: 0.2rem 0.6rem; background: var(--surface); border-radius: 20px; border: 1px solid var(--border); }
+
+/* MÉMOIRES / PROJETS */
+.project-card { background: transparent; border: 1px solid var(--border); border-radius: 8px; padding: 2.5rem; transition: 0.3s; margin-bottom: 2rem;}
+.project-card:hover { background: var(--surface); border-color: var(--text-muted); }
+.project-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;}
+.project-title { font-size: 1.4rem; font-weight: 700; color: var(--text); }
+.project-links { display: flex; gap: 1rem; }
+.project-links a { color: var(--text-muted); text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; display: flex; align-items: center; gap: 0.4rem; transition: 0.2s;}
+.project-links a:hover { color: var(--accent); }
+.project-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+.project-desc strong { color: var(--text); font-weight: 500; }
+
+/* CONTACT */
+.contact-section { text-align: center; max-width: 600px; margin: 0 auto; padding-top: 4rem; padding-bottom: 8rem;}
+.contact-section p { color: var(--text-muted); margin-bottom: 2rem; font-size: 1.1rem; }
+.contact-links { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+.contact-item { font-family: 'JetBrains Mono', monospace; font-size: 1rem; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 0.8rem; transition: 0.3s; padding: 1rem 2rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface);}
+.contact-item:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-3px); box-shadow: var(--accent-glow);}
+.contact-item i { font-style: normal; font-size: 1.2rem;}
+
+/* FOOTER */
+footer { text-align: center; padding: 2rem; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-muted); border-top: 1px dashed var(--border); }
+
+/* ANIMATIONS */
+.fade-up { opacity: 0; transform: translateY(20px); transition: 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* RESPONSIVE */
+@media(max-width: 900px) {
+  .hero h1 { font-size: 3rem; }
+  .stats { grid-template-columns: repeat(2, 1fr); gap: 3rem 1rem; text-align: center; border-left: none; border-right: none;}
+  .section-header { flex-direction: column; gap: 0.5rem; margin-bottom: 3rem; }
+  .section-line { display: none; }
+}
+
+@media(max-width: 768px) {
+  nav ul { 
+    display: flex; position: absolute; top: 100%; left: 0; width: 100%; 
+    background: var(--nav-bg); backdrop-filter: blur(15px);
+    flex-direction: column; padding: 2rem; gap: 1.5rem; text-align: center; 
+    border-bottom: 1px solid var(--border);
+    transform: translateY(-150%); opacity: 0; pointer-events: none;
+    transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); z-index: -1;
+  }
+  nav ul.active { transform: translateY(0); opacity: 1; pointer-events: auto; }
+  .hamburger { display: flex; }
+  .hamburger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+  .hamburger.active span:nth-child(2) { opacity: 0; }
+  .hamburger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+  .nav-right { gap: 1rem; }
+  .hero { padding-top: 6rem; }
+  .timeline { margin-left: 0; padding-left: 1.5rem; }
+  .project-card { padding: 1.5rem; }
+}
+
+/* IMPRESSION */
+@media print {
+  body { background: #ffffff; color: #000000; }
+  nav, .hero-cta, #network-container, .theme-switch { display: none !important; }
+  .stats, .skill-block, .project-card, .contact-item { border: 1px solid #000; box-shadow: none; background: #fff; }
+  .hero h1, .section-title, .exp-title, .exp-company, .project-title { color: #000; }
+  .text-muted { color: #333; }
+  .timeline::before { background: #000; }
+  .timeline-item::before { border-color: #000; }
+}
+</style>
+</head>
+<body>
+
+<header>
+<nav>
+  <div class="container nav-content">
+    <div class="logo">V<span>.</span>MEKOULOU</div>
+    <div class="nav-right">
+      <button class="theme-switch" id="themeToggle" aria-label="Changer le thème">
+        <span class="icon-moon">🌙</span>
+        <span class="icon-sun">☀️</span>
+      </button>
+      <button class="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul>
+        <li><a href="#about"><span>01.</span>Présentation</a></li>
+        <li><a href="#skills"><span>02.</span>Compétences</a></li>
+        <li><a href="#experience"><span>03.</span>Expérience</a></li>
+        <li><a href="#projects"><span>04.</span>Ingénierie</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+</header>
+
+<main class="container">
+
+<section id="about" class="hero">
+  <div class="hero-content">
+    <div class="mono sys-prompt">
+      <span id="typing-text"></span><div class="cursor"></div>
+    </div>
+    
+    <h1 class="fade-up">Vincent Mekoulou.<br><span class="text-muted">Je maintiens le réseau en vie.</span></h1>
+    
+    <p class="fade-up" style="transition-delay: 0.1s;">
+      Administrateur Système et Réseau basé en Île-de-France. Spécialisé dans la conception d'architectures haute disponibilité, la sécurisation des infrastructures et l'automatisation des processus métier.
+    </p>
+    
+    <div class="hero-cta fade-up" style="transition-delay: 0.2s;">
+      <a href="#" class="btn btn-primary anti-spam" data-type="email" data-user="vincentmekoulou" data-domain="gmail.com">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        Me contacter
+      </a>
+      <a href="#experience" class="btn btn-outline">
+        ./voir_cv.sh
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="stats fade-up">
+  <div class="stat-box"><div class="stat-num">07</div><div class="stat-label">Années d'expérience</div></div>
+  <div class="stat-box"><div class="stat-num">04</div><div class="stat-label">Missions critiques</div></div>
+  <div class="stat-box"><div class="stat-num">50+</div><div class="stat-label">Playbooks Ansible</div></div>
+  <div class="stat-box"><div class="stat-num">Bac+5</div><div class="stat-label">Expert Cybersécurité</div></div>
+</div>
+
+<section id="skills">
+  <div class="section-header fade-up">
+    <span class="section-num">02.</span>
+    <h2 class="section-title">Stack Technique</h2>
+    <div class="section-line"></div>
+  </div>
+  
+  <div class="skills-grid">
+    <div class="skill-block fade-up">
+      <div class="skill-header">
+        <span class="skill-icon">🖥️</span>
+        <span class="skill-name">Systèmes & Ops</span>
+      </div>
+      <div class="skill-list">
+        <span>Linux (Debian/CentOS)</span><span>Windows Server</span>
+        <span>VMware vSphere</span><span>Ansible</span><span>Bash</span>
+      </div>
+    </div>
+    
+    <div class="skill-block fade-up" style="transition-delay: 0.1s;">
+      <div class="skill-header">
+        <span class="skill-icon">🌐</span>
+        <span class="skill-name">Réseau & Routing</span>
+      </div>
+      <div class="skill-list">
+        <span>Cisco</span><span>BGP</span><span>OSPF</span><span>MPLS</span>
+        <span>VLAN 802.1Q</span><span>TCP/IP</span><span>DNS</span>
+      </div>
+    </div>
+    
+    <div class="skill-block fade-up" style="transition-delay: 0.2s;">
+      <div class="skill-header">
+        <span class="skill-icon">🛡️</span>
+        <span class="skill-name">Sécurité & HA</span>
+      </div>
+      <div class="skill-list">
+        <span>Fortinet</span><span>VPN IPsec</span><span>VRRP / UCARP</span>
+        <span>Shorewall</span><span>NAT/PAT</span>
+      </div>
+    </div>
+    
+    <div class="skill-block fade-up" style="transition-delay: 0.3s;">
+      <div class="skill-header">
+        <span class="skill-icon">📊</span>
+        <span class="skill-name">Télécoms & Visibilité</span>
+      </div>
+      <div class="skill-list">
+        <span>SIP / Centrex</span><span>QoS</span><span>Grafana</span>
+        <span>Zabbix / Centreon</span><span>SNMP</span><span>rsyslog</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="section-header fade-up">
+    <span class="section-num">03.</span>
+    <h2 class="section-title">Où j'ai travaillé</h2>
+    <div class="section-line"></div>
+  </div>
+  
+  <div class="timeline">
+    <div class="timeline-item fade-up">
+      <span class="exp-meta">09/2023 — Présent (22 mois)</span>
+      <h3 class="exp-title">Expert Linux</h3>
+      <div class="exp-company">MAIASPACE (via ASTEK)</div>
+      <ul class="exp-desc">
+        <li>Déploiement et maintien en condition opérationnelle d'un parc de <strong>~10 VMs</strong> sous VMware vSphere.</li>
+        <li><strong>Durcissement des systèmes Linux</strong>, centralisation des logs via rsyslog, et sécurisation des accès par bastion.</li>
+        <li>Développement de <strong>scripts Bash</strong> pour l'automatisation de la création de comptes avec mots de passe aléatoires.</li>
+      </ul>
+      <div class="exp-tech">
+        <span>VMware</span><span>Linux</span><span>Bash</span><span>rsyslog</span>
+      </div>
+    </div>
+
+    <div class="timeline-item fade-up">
+      <span class="exp-meta">07/2022 — 07/2023 (13 mois)</span>
+      <h3 class="exp-title">Administrateur Système Linux</h3>
+      <div class="exp-company">MAINCARE — Secteur Santé (via ASTEK)</div>
+      <ul class="exp-desc">
+        <li>MCO critique d'applications de santé (Debian/CentOS) : <strong>patching hebdomadaire</strong> sur un périmètre de 6 à 10 serveurs.</li>
+        <li>Gestion, modification et évolution de <strong>~50 playbooks Ansible</strong> pour l'automatisation des tâches de maintenance.</li>
+        <li>Monitoring applicatif sous <strong>Grafana</strong> et troubleshooting avec garantie de MTTR inférieur à 10 minutes.</li>
+      </ul>
+      <div class="exp-tech">
+        <span>Ansible</span><span>Debian/CentOS</span><span>Grafana</span>
+      </div>
+    </div>
+
+    <div class="timeline-item fade-up">
+      <span class="exp-meta">06/2020 — 04/2021 (11 mois)</span>
+      <h3 class="exp-title">Chargé de déploiement VoIP</h3>
+      <div class="exp-company">CORIOLIS TELECOM</div>
+      <ul class="exp-desc">
+        <li>Provisioning, portabilité et migration d'infrastructures VoIP multi-sites (Centrex, Trunk SIP).</li>
+        <li>Configuration de routeurs <strong>Cisco</strong> : gestion du routage, des VLANs, mise en place de la <strong>QoS</strong> et tunnels <strong>VPN IPsec</strong>.</li>
+        <li>Support N2 sur la qualité de la voix (analyses de latence, gigue, perte de paquets).</li>
+      </ul>
+      <div class="exp-tech">
+        <span>Cisco</span><span>SIP</span><span>QoS</span><span>IPsec</span>
+      </div>
+    </div>
+
+    <div class="timeline-item fade-up">
+      <span class="exp-meta">04/2018 — 02/2020 (23 mois)</span>
+      <h3 class="exp-title">Administrateur Réseaux et Systèmes</h3>
+      <div class="exp-company">CELESTE — Opérateur B2B</div>
+      <ul class="exp-desc">
+        <li>Diagnostic avancé (N2) et rétablissement des liens d'accès Fibre/SDSL pour les clients entreprises.</li>
+        <li>Administration quotidienne d'équipements <strong>Cisco et Fortinet</strong> (Création de VLANs, règles de pare-feu, VPNs).</li>
+        <li>Optimisation des plateformes de supervision (Zabbix, Centreon) avec une réduction de <strong>40% du bruit d'alertes</strong>.</li>
+      </ul>
+      <div class="exp-tech">
+        <span>Fortinet</span><span>Cisco</span><span>Zabbix</span><span>Centreon</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="section-header fade-up">
+    <span class="section-num">04.</span>
+    <h2 class="section-title">Projets d'Ingénierie</h2>
+    <div class="section-line"></div>
+  </div>
+  
+  <div class="project-card fade-up">
+    <div class="project-header">
+      <div>
+        <span class="mono exp-meta">Mémoire IPSSI (Mastère 1)</span>
+        <h3 class="project-title">Haute Disponibilité & Résilience Réseau</h3>
+      </div>
+      <div class="project-links">
+        <a href="#"><i>⎋</i> Projet Client (Celeste)</a>
+      </div>
+    </div>
+    
+    <div class="project-desc">
+      Conception d'un réseau tolérant aux pannes utilisant des routeurs <strong>StarQoS (Debian)</strong>. La synchronisation est assurée par <strong>UCARP/VRRP</strong>. La redondance des liens (Fibre/ADSL) est gérée dynamiquement par le protocole <strong>BGP (Bird)</strong>, avec un filtrage <strong>Shorewall</strong>.
+    </div>
+
+    <div class="interactive-wrapper">
+      <div class="interactive-header">
+        <span>topologie_client.ha</span>
+        <span class="interactive-status">Topologie BGP / UCARP</span>
+      </div>
+      <div id="network-container"></div>
+    </div>
+    
+    <div class="exp-tech" style="margin-top: 1.5rem;">
+      <span>BGP / Bird</span><span>UCARP / VRRP</span><span>Shorewall</span><span>QoS DiffServ</span>
+    </div>
+  </div>
+
+  <div class="project-card fade-up">
+    <div class="project-header">
+      <div>
+        <span class="mono exp-meta">Mémoire IPSSI (Mastère 2)</span>
+        <h3 class="project-title">Stratégies de Défense Cyber</h3>
+      </div>
+      <div class="project-links">
+        <a href="#"><i>⎋</i> Coriolis Telecom</a>
+      </div>
+    </div>
+    
+    <div class="project-desc">
+      Analyse des menaces modernes (DDoS, Ransomware, MITM) et mise en place de contre-mesures structurelles. L'étude couvre le dimensionnement d'un <strong>SOC</strong>, l'intégration d'outils <strong>SIEM (Splunk, QRadar)</strong>, et l'application des méthodologies d'analyse de risque <strong>EBIOS</strong> et <strong>ISO 27001</strong>.
+    </div>
+    
+    <div class="exp-tech">
+      <span>SOC</span><span>SIEM (Splunk)</span><span>ISO 27001</span><span>EBIOS</span><span>Pentest</span>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact-section fade-up">
+  <span class="section-num" style="font-size: 1rem;">05. Prochaine étape</span>
+  <h2 class="section-title" style="margin-bottom: 1rem; border:none; text-align: center;">Démarrons une discussion</h2>
+  <p>Mon statut actuel est <strong>disponible</strong>. Que vous ayez une infrastructure à concevoir, un parc serveur à automatiser, ou simplement une question technique, ma boîte de réception est ouverte.</p>
+  
+  <div class="contact-links">
+    <a href="#" class="contact-item anti-spam" data-type="email" data-user="vincentmekoulou" data-domain="gmail.com">
+      <i>✉️</i> Envoyer un Email
+    </a>
+    <a href="#" class="contact-item anti-spam" data-type="phone" data-phone="+33781239642">
+      <i>📱</i> 07 81 23 96 42
+    </a>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>Conçu et codé en HTML/CSS/JS pur.<br>© 2026 Vincent Mekoulou.</p>
+</footer>
+
+<script>
+// --- TYPING EFFECT ---
+const textArray = ["./init_profile.sh", "Chargement des modules...", "vmekoulou@sysadmin:~$ whoami"];
+const typingDelay = 50;
+const erasingDelay = 30;
+const newTextDelay = 800;
+let textArrayIndex = 0;
+let charIndex = 0;
+const typedTextSpan = document.getElementById("typing-text");
+
+function type() {
+  if (charIndex < textArray[textArrayIndex].length) {
+    typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
+    charIndex++;
+    setTimeout(type, typingDelay);
+  } else {
+    if(textArrayIndex < textArray.length - 1) {
+      setTimeout(erase, newTextDelay);
+    }
+  }
+}
+
+function erase() {
+  if (charIndex > 0) {
+    typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex-1);
+    charIndex--;
+    setTimeout(erase, erasingDelay);
+  } else {
+    textArrayIndex++;
+    setTimeout(type, typingDelay + 200);
+  }
+}
+document.addEventListener("DOMContentLoaded", function() {
+  if(textArray.length) setTimeout(type, newTextDelay + 200);
+});
+
+// --- MENU MOBILE HAMBURGER ---
+const hamburger = document.querySelector('.hamburger');
+const navMenu = document.querySelector('nav ul');
+
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('active');
+  navMenu.classList.toggle('active');
+});
+
+document.querySelectorAll('nav a').forEach(link => {
+  link.addEventListener('click', () => { 
+    hamburger.classList.remove('active');
+    navMenu.classList.remove('active'); 
+  });
+});
+
+// --- LOGIQUE DU THÈME SOMBRE/CLAIR ---
+const toggleBtn = document.getElementById('themeToggle');
+const currentTheme = localStorage.getItem('theme') || 'dark';
+
+document.documentElement.setAttribute('data-theme', currentTheme);
+
+toggleBtn.addEventListener('click', () => {
+  let newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
+  
+  if(window.network) {
+    let opts = getNetworkOptions(newTheme);
+    window.network.setOptions(opts);
+  }
+});
+
+// --- ANIMATIONS AU SCROLL ---
+const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, observerOptions);
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// --- PROTECTION ANTI-SPAM ---
+document.querySelectorAll('.anti-spam').forEach(link => {
+  const buildLink = function() {
+    const type = this.getAttribute('data-type');
+    if (type === 'email') this.href = `mailto:${this.getAttribute('data-user')}@${this.getAttribute('data-domain')}`;
+    else if (type === 'phone') this.href = `tel:${this.getAttribute('data-phone')}`;
+  };
+  link.addEventListener('mouseenter', buildLink);
+  link.addEventListener('click', buildLink);
+});
+
+// --- SCHÉMA RÉSEAU INTERACTIF (HIÉRARCHIQUE & STRICT) ---
+function getNetworkOptions(theme) {
+  const isDark = theme === 'dark';
+  return {
+    nodes: {
+      borderWidth: 2,
+      font: { color: isDark ? '#f4f4f5' : '#09090b', size: 12, face: 'Inter', bold: true },
+      margin: 10
+    },
+    edges: {
+      color: { color: isDark ? '#52525b' : '#d4d4d8', highlight: isDark ? '#10b981' : '#2563eb' },
+      width: 2, smooth: { type: 'cubicBezier', forceDirection: 'vertical', roundness: 0.4 }
+    },
+    layout: {
+      hierarchical: {
+        enabled: true,
+        direction: 'UD', /* Up to Down */
+        sortMethod: 'directed',
+        nodeSpacing: 250,
+        levelSeparation: 100
+      }
+    },
+    interaction: { hover: true, dragNodes: false, zoomView: false },
+    physics: { enabled: false }
+  };
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const nodes = new vis.DataSet([
+    { id: 1, label: 'AS CELESTE\n(Backbone BGP)', shape: 'cloud', level: 0, color: {background: '#0ea5e9', border: '#0284c7'} },
+    { id: 2, label: 'Lien Actif\n(Fibre 20M)', shape: 'box', level: 1, color: {background: '#f97316', border: '#ea580c'} },
+    { id: 3, label: 'Lien Secours\n(ADSL Duo)', shape: 'box', level: 1, color: {background: '#52525b', border: '#3f3f46'} },
+    { id: 4, label: 'StarQoS MASTER\n(Debian / Shorewall)', shape: 'box', level: 2, color: {background: '#ec4899', border: '#db2777'} },
+    { id: 5, label: 'StarQoS SLAVE\n(Debian / Shorewall)', shape: 'box', level: 2, color: {background: '#52525b', border: '#3f3f46'} },
+    { id: 6, label: 'LAN Client\n(VIP: 172.16.13.254)', shape: 'database', level: 3, color: {background: '#10b981', border: '#059669'} }
+  ]);
+
+  const edges = new vis.DataSet([
+    { from: 1, to: 2, label: 'BGP', font: {size: 10, align: 'middle'} },
+    { from: 1, to: 3, label: 'BGP (Backup)', dashes: true, font: {size: 10, align: 'middle'} },
+    { from: 2, to: 4, label: 'eth0-efm', font: {size: 10, align: 'middle'} },
+    { from: 3, to: 5, label: 'eth0-adsl', dashes: true, font: {size: 10, align: 'middle'} },
+    { from: 4, to: 5, label: 'Lien Sync (UCARP)', dashes: [5,5], font: {size: 10, align: 'top'}, color: {color: '#ec4899'}, smooth: {type: 'curvedCW', roundness: 0.2} },
+    { from: 4, to: 6, label: 'eth1 (Actif)', font: {size: 10, align: 'middle'} },
+    { from: 5, to: 6, label: 'eth1 (Passif)', dashes: true, font: {size: 10, align: 'middle'} }
+  ]);
+
+  const container = document.getElementById('network-container');
+  window.network = new vis.Network(container, { nodes: nodes, edges: edges }, getNetworkOptions(document.documentElement.getAttribute('data-theme')));
+});
+</script>
+</body>
+</html>
